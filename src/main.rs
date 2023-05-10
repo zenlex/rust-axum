@@ -32,7 +32,8 @@ fn routes_hello() -> Router {
 }
 
 fn routes_static() -> Router {
-    Router::new().nest_service("/", ServeDir::new("./"))
+    //todo create actuall fallback route
+    Router::new().nest_service("/", ServeDir::new("./fallback"))
 }
 //#endregion
 

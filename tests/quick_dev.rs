@@ -8,7 +8,7 @@ async fn quick_dev() -> Result<()> {
 
     hc.do_get("/hello/Erich").await?.print().await?;
 
-    // hc.do_get("/fallback.html").await?.print().await?;
+    hc.do_get("/fallback.html").await?.print().await?;
 
     Ok(())
 }

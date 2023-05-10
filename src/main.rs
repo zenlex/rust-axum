@@ -1,3 +1,4 @@
+pub use self::error::{Error, Result};
 use std::net::SocketAddr;
 use tower_http::services::ServeDir;
 
@@ -8,6 +9,8 @@ use axum::{
     Router,
 };
 use serde::Deserialize;
+
+mod error;
 
 #[tokio::main]
 async fn main() {
@@ -51,7 +54,7 @@ async fn handler_hello(Query(params): Query<HelloParams>) -> impl IntoResponse {
 }
 
 async fn handler_hello2(Path(name): Path<String>) -> impl IntoResponse {
-    println!("->> {:<12} - handler_hello - {name:?}", "HANDLER");
+    println!("->> {:<12} - handler_hello2 - {name:?}", "HANDLER");
 
     Html(format!("Hello <strong>{name}</strong"))
 }

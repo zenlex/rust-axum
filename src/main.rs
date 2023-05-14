@@ -4,18 +4,22 @@ use tower_http::services::ServeDir;
 
 use axum::{
     extract::{Path, Query},
-    response::{Html, IntoResponse},
+    middleware,
+    response::{Html, IntoResponse, Response},
     routing::get,
     Router,
 };
 use serde::Deserialize;
 
 mod error;
+mod web;
 
 #[tokio::main]
 async fn main() {
     let routes_all = Router::new()
         .merge(routes_hello())
+        .merge(web::routes_login::routes())
+        .layer(middleware::map_response(main_response_mapper))
         .fallback_service(routes_static());
 
     // Start Server --->
@@ -32,6 +36,13 @@ fn routes_hello() -> Router {
     Router::new()
         .route("/hello", get(handler_hello))
         .route("/hello/:name", get(handler_hello2))
+}
+
+async fn main_response_mapper(res: Response) -> Response {
+    println!("->> {:<12} - main_response_mapper", "RES_MAPPPER");
+
+    println!();
+    res
 }
 
 fn routes_static() -> Router {

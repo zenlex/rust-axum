@@ -13,7 +13,7 @@ pub struct Ticket {
 
 #[derive(Deserialize)]
 pub struct TicketForCreate {
-    pub id: u64,
+    pub title: String,
 }
 
 #[derive(Clone)]
@@ -26,5 +26,36 @@ impl ModelController {
         Ok(Self {
             tickets_store: Arc::default(),
         })
+    }
+
+    // CRUD Functions
+    pub async fn create_ticket(&self, ticket_fc: TicketForCreate) -> Result<Ticket> {
+        let mut store = self.tickets_store.lock().unwrap();
+
+        let id = store.len();
+        let ticket = Ticket {
+            id,
+            title: ticket_fc.title,
+        };
+
+        store.push(Some(ticket));
+
+        Ok(ticket);
+    }
+
+    pub async fn list_tickets(&self) -> Result<Vec<Ticket>> {
+        let store = self.tickets_store.lock().unwrap();
+
+        let tickets = store.iter().filter_map(|t| t.clone()).collect();
+
+        Ok(tickets)
+    }
+
+    pub async fn delete_ticket(&self, id: u64) -> Result<Ticket> {
+        let mut store = self.tickets_store.lock().unwrap();
+
+        let ticket = store.get_mut(id as usize).and_then(|t| t.take());
+
+        ticket.ok_or(Error::TicketDeleteFailIdNotFound { id })
     }
 }

@@ -34,13 +34,13 @@ impl ModelController {
 
         let id = store.len();
         let ticket = Ticket {
-            id,
+            id: id as u64,
             title: ticket_fc.title,
         };
 
-        store.push(Some(ticket));
+        store.push(Some(ticket.clone()));
 
-        Ok(ticket);
+        Ok(ticket)
     }
 
     pub async fn list_tickets(&self) -> Result<Vec<Ticket>> {

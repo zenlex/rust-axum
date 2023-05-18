@@ -29,5 +29,16 @@ async fn quick_dev() -> Result<()> {
     );
     login_req.await?.print().await?;
 
+    let ticket_req = hc.do_post(
+        "/api/tickets",
+        json!({
+            "title":"test ticket"
+        }),
+    );
+    ticket_req.await?.print().await?;
+
+    let ticket_req = hc.do_get("/api/tickets");
+    ticket_req.await?.print().await?;
+
     Ok(())
 }

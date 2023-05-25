@@ -1,4 +1,4 @@
-use crate::ctx::{self, Ctx};
+use crate::ctx::Ctx;
 use crate::error::Result;
 use crate::model::{ModelController, Ticket, TicketForCreate};
 use axum::{
